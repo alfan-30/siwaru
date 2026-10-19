@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+  <title>Guru BK - Absensi</title>
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
+  <style type="text/tailwindcss">
+    body { font-family: 'Poppins', sans-serif; }
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24
+    }
+    tr.selected { background-color: #FEE2E2 !important; }
+    @keyframes modalFadeIn {
+      from { opacity: 0; transform: scale(0.95) translateY(-10px); }
+      to { opacity: 1; transform: scale(1) translateY(0); }
+    }
+    .animate-modal { animation: modalFadeIn 0.25s ease-out forwards; }
+    #sidebarBackdrop { transition: opacity 0.3s ease; }
+  </style>
+</head>
+
+<body class="bg-gray-100 flex flex-col md:flex-row min-h-screen">
+
+  <!-- Backdrop untuk mobile -->
+  <div id="sidebarBackdrop" class="fixed inset-0 bg-black bg-opacity-40 hidden z-40 md:hidden"></div>
+
+  <!-- Sidebar -->
+  <aside id="sidebar"
+    class="fixed md:static inset-y-0 left-0 w-64 bg-[#343A3F] flex flex-col shadow-lg p-6 transform -translate-x-full md:translate-x-0 transition-transform duration-300 z-50">
+    <div class="flex flex-col items-center mb-8">
+      <img alt="SIWARU Logo" class="w-full h-20 object-contain" src="assets/SIWARU.png" />
+    </div>
+    <nav class="flex-1 space-y-3">
+      <a class="flex items-center px-4 py-2 text-gray-300 hover:bg-gray-700 hover:text-white rounded-lg" href="DashboardGURUBK.html">
+        <span class="material-symbols-outlined mr-3">home</span>
+        Dashboard
+      </a>
+      <a class="flex items-center px-4 py-2 bg-gray-700 text-white font-semibold rounded-lg" href="#">
+	  <span class="material-symbols-outlined mr-3">assignment</span>
+	  Absensi
+	  </a>
+      <a class="flex items-center px-4 py-2 text-gray-300 hover:bg-gray-700 hover:text-white rounded-lg" href="jadwalGURUBK.html">
+        <span class="material-symbols-outlined mr-3">calendar_month</span>
+        Jadwal
+      </a>
+    </nav>
+    <div class="p-4">
+      <a class="flex items-center px-4 py-2 text-gray-300 hover:bg-gray-700 hover:text-white rounded-lg" href="login.html">
+        <span class="material-symbols-outlined mr-3">logout</span>
+        Logout
+      </a>
+    </div>
+  </aside>
+
+  <!-- Main Content -->
+  <div class="flex-1 flex flex-col min-h-screen">
+    <header class="flex justify-between items-center p-4 bg-white border-b">
+      <div class="flex items-center">
+        <button id="burgerButton" class="mr-4 text-gray-700 md:hidden">
+          <span class="material-symbols-outlined">menu</span>
+        </button>
+        <h1 class="text-xl font-semibold">Guru BK</h1>
+      </div>
+      <div class="flex items-center space-x-4">
+        <a href="profileGURUBK.html" class="p-2 rounded-full hover:bg-gray-200 transition flex items-center justify-center">
+          <span class="material-symbols-outlined text-gray-500">person</span>
+        </a>
+      </div>
+    </header>
+
+    <!-- Halaman Guru BK -->
+    <main class="flex-1 p-6 bg-gray-100">
+      <!-- Judul + Realtime -->
+      <div class="flex flex-col md:flex-row justify-between md:items-center mb-4 space-y-3 md:space-y-0">
+        <h2 class="text-2xl font-bold">Guru BK</h2>
+        <div class="text-right">
+          <span class="text-gray-600 font-semibold">Waktu Sekarang: </span>
+          <span id="clock" class="text-red-600 font-bold text-lg"></span>
+        </div>
+      </div>
+
+      <!-- Konten Utama -->
+      <div class="bg-white p-6 rounded-lg shadow-md">
+        <!-- Tombol Aksi -->
+		<div class="flex justify-between items-center mb-6">
+		  <!-- Grup Tombol -->
+			<div class="flex space-x-1 md:space-x-2 mr-3 md:mr-6">
+			<!-- Tombol Cetak Pdf Dan Excel -->
+			<button onclick="handleUbahClick()"
+			  class="bg-green-500 w-10 h-10 md:w-auto md:h-auto p-3 rounded-lg text-white hover:bg-green-600 transition flex items-center justify-center">
+			  <img src="assets/update.png" alt="Cetak" class="w-5 h-5" />
+			</button>
+		  </div>
+
+          <!-- Search (dipindahkan ke sini) -->
+          <div class="relative w-full max-w-xs">
+            <span
+              class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">search</span>
+            <input id="searchInput"
+              class="pl-10 pr-4 py-2 w-full border rounded-md bg-transparent focus:outline-none focus:ring-2 focus:ring-blue-500"
+              placeholder="Search" type="text" />
+          </div>
+        </div>
+
+        <div class="overflow-x-auto">
+          <table id="absensiTable" class="w-full text-xs md:text-sm text-center border min-w-[600px]">
+            <thead>
+              <tr class="bg-gray-700 text-white">
+                <th class="p-3">#</th>
+                <th class="p-3">Nama Siswa</th>
+                <th class="p-3">Nomor Induk Siswa</th>
+				<th class="p-3">Mata Pelajaran</th>
+				<th class="p-3">Jam</th>
+				<th class="p-3">Tanggal</th>
+                <th class="p-3">Status</th>
+                <th class="p-3">Aksi</th>
+              </tr>
+            </thead>
+            <tbody class="cursor-pointer">
+              <tr>
+                <td class="p-3">1</td>
+                <td class="p-3">Rama Putra</td>
+                <td class="p-3">0784592076</td>
+				<td class="p-3">Pengolahan Citra Digital</td>
+				<td class="p-3">07.30</td>
+				<td class="p-3">20-07-2025</td>
+                <td class="p-3 text-red-600">Belum Absen</td>
+                <td class="p-3"><button class="text-blue-600 hover:text-blue-800 font-semibold underline" onclick="openDetailModal('Rama Putra', '0784592076', 'Pengolahan Citra Digital', '07.30', '20-07-2025', '', '', 'Belum Absen')">Detail</button></td>
+              </tr>
+              <tr>
+                <td class="p-3">2</td>
+                <td class="p-3">Sinta Dewi</td>
+                <td class="p-3">0784587576</td>
+				<td class="p-3">Matematika Diskrit</td>
+				<td class="p-3">07.15</td>
+				<td class="p-3">20-07-2025</td>
+                <td class="p-3 text-red-600">Belum Absen</td>
+                <td class="p-3"><button class="text-blue-600 hover:text-blue-800 font-semibold underline" onclick="openDetailModal('Sinta Dewi', '0784587576', 'Matematika Diskrit', '07.15', '20-07-2025', '', '', 'Belum Absen')">Detail</button></td>
+              </tr>
+              <tr>
+                <td class="p-3">3</td>
+                <td class="p-3">Aldi Pratama</td>
+                <td class="p-3">0787647576</td>
+				<td class="p-3">Sistem Operasi</td>
+				<td class="p-3">07.00</td>
+				<td class="p-3">20-07-2025</td>
+                <td class="p-3 text-red-600">Belum Absen</td>
+                <td class="p-3"><button class="text-blue-600 hover:text-blue-800 font-semibold underline" onclick="openDetailModal('Aldi Pratama', '0787647576', 'Sistem Operasi', '07.00', '20-07-2025', '', '', 'Belum Absen')">Detail</button></td>
+              </tr>
+              <tr>
+                <td class="p-3">4</td>
+                <td class="p-3">Nadia Ayu</td>
+                <td class="p-3">0963647576</td>
+				<td class="p-3">Aljabar Linier Dan Matriks</td>
+				<td class="p-3">07.25</td>
+				<td class="p-3">20-07-2025</td>
+                <td class="p-3 text-red-600">Belum Absen</td>
+                <td class="p-3"><button class="text-blue-600 hover:text-blue-800 font-semibold underline" onclick="openDetailModal('Nadia Ayu', '0963647576', 'Aljabar Linier Dan Matriks', '07.25', '20-07-2025', '', '', 'Belum Absen')">Detail</button></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </main>
+
+    <!-- Modal Ubah Keterangan -->
+	<div id="ubahModal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50 overflow-y-auto">
+	  <div class="bg-white rounded-xl shadow-2xl w-full max-w-sm p-6 my-8 animate-modal overflow-y-auto max-h-[90vh]">
+		<h3 class="text-xl font-semibold mb-4 text-center">Ubah Keterangan Siswa</h3>
+		<form id="ubahForm" class="space-y-4" onsubmit="submitUbah(event)">
+		  <div>
+			<label for="ubahNama" class="block text-gray-800 font-medium mb-1">Nama Siswa</label>
+			<input id="ubahNama" type="text" readonly
+			  class="w-full border border-gray-300 rounded-lg px-3 py-2 bg-gray-50" />
+		  </div>
+		  <div>
+			<label for="ubahNis" class="block text-gray-800 font-medium mb-1">Nomor Induk Siswa</label>
+			<input id="ubahNis" type="text" readonly
+			  class="w-full border border-gray-300 rounded-lg px-3 py-2 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500" />
+		  </div>
+		  <div>
+			<label for="ubahMapel" class="block text-gray-800 font-medium mb-1">Mata Pelajaran</label>
+			<input id="ubahMapel" type="text" readonly
+			  class="w-full border border-gray-300 rounded-lg px-3 py-2 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500" />
+		  </div>
+		  <div>
+			<label for="ubahJam" class="block text-gray-800 font-medium mb-1">Jam</label>
+			<input id="ubahJam" type="text" readonly
+			  class="w-full border border-gray-300 rounded-lg px-3 py-2 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500" />
+		  </div>
+		  <div>
+			<label for="ubahTanggal" class="block text-gray-800 font-medium mb-1">Tanggal</label>
+			<input id="ubahTanggal" type="date" readonly
+			  class="w-full border border-gray-300 rounded-lg px-3 py-2 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500" />
+		  </div>
+		  <div>
+			<label for="ubahStatus" class="block text-gray-800 font-medium mb-1">Status</label>
+			<select id="ubahStatus" class="w-full border border-gray-300 rounded-lg px-3 py-2 bg-white">
+			  <option value="Hadir">Hadir</option>
+			  <option value="Izin">Izin</option>
+			  <option value="Alpa">Alpa</option>
+			</select>
+		  </div>
+		  <div>
+			<label for="ubahAlasan" class="block text-gray-800 font-medium mb-1">Alasan / Bukti</label>
+			<textarea id="ubahAlasan" placeholder="Tuliskan alasan keterlambatan..."
+			  class="w-full border border-gray-300 rounded-lg px-3 py-2 h-24 focus:outline-none focus:ring-2 focus:ring-blue-500"></textarea>
+		  </div>
+		  <div>
+			<label for="bukti" class="block text-gray-800 font-medium mb-1">Upload Bukti</label>
+			<input id="bukti" type="file" class="w-full border border-gray-300 rounded-lg px-3 py-2 bg-white" />
+		  </div>
+		  <div class="flex justify-end pt-2 space-x-2">
+			<button type="button" onclick="closeUbahModal()"
+			  class="bg-gray-300 text-gray-800 px-4 py-2 rounded-lg hover:bg-gray-400">Batal</button>
+			<button id="submit" type="submit"
+			  class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700">Kirim</button>
+		  </div>
+		</form>
+	  </div>
+	</div>
+
+
+    <!-- Modal Detail Absensi -->
+<div
+  id="detailModal"
+  class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50"
+>
+  <div
+    class="bg-white rounded-xl shadow-2xl w-full max-w-sm p-6 animate-modal
+           max-h-[90vh] overflow-y-auto"
+  >
+    <h3 class="text-lg font-semibold mb-4 text-center">Detail Absensi</h3>
+
+    <form class="space-y-3 text-left">
+      <!-- Nama -->
+      <div>
+        <label for="namaDetail" class="block text-sm font-medium">Nama</label>
+        <input
+          id="namaDetail"
+          type="text"
+          readonly
+          class="mt-1 w-full border rounded-lg px-3 py-2 bg-gray-50"/>
+      </div>
+
+      <!-- Nomor Induk Siswa -->
+      <div>
+        <label for="nisDetail" class="block text-sm font-medium">
+          Nomor Induk Siswa
+        </label>
+        <input
+          id="nisDetail"
+          type="text"
+          readonly
+          class="mt-1 w-full border rounded-lg px-3 py-2 bg-gray-50"/>
+      </div>
+
+      <!-- Mata Pelajaran -->
+      <div>
+        <label for="mapelDetail" class="block text-sm font-medium">
+          Mata Pelajaran
+        </label>
+        <input
+          id="mapelDetail"
+          type="text"
+          readonly
+          class="mt-1 w-full border rounded-lg px-3 py-2 bg-gray-50"/>
+      </div>
+
+      <!-- Jam -->
+      <div>
+        <label for="jamDetail" class="block text-sm font-medium">Jam</label>
+        <input
+          id="jamDetail"
+          type="text"
+          readonly
+          class="mt-1 w-full border rounded-lg px-3 py-2 bg-gray-50"/>
+      </div>
+
+      <!-- Tanggal -->
+      <div>
+        <label for="tanggalDetail" class="block text-sm font-medium">Tanggal</label>
+        <input
+          id="tanggalDetail"
+          type="text"
+          readonly
+          class="mt-1 w-full border rounded-lg px-3 py-2 bg-gray-50"/>
+      </div>
+
+      <!-- Alasan / Bukti -->
+      <div>
+        <label for="alasanDetail" class="block text-sm font-medium">
+          Alasan / Bukti
+        </label>
+        <textarea
+          id="alasanDetail"
+          rows="3"
+          readonly
+          class="mt-1 w-full border rounded-lg px-3 py-2 bg-gray-50">
+		  </textarea>
+      </div>
+
+      <!-- Kirim Bukti -->
+      <div>
+        <label for="kirimbuktiDetail" class="block text-sm font-medium">
+          Kirim Bukti
+        </label>
+        <input
+          id="kirimbuktiDetail"
+          type="text"
+          readonly
+          class="mt-1 w-full border rounded-lg px-3 py-2 bg-gray-50"/>
+      </div>
+
+      <!-- Status -->
+      <div>
+        <label for="statusDetail" class="block text-sm font-medium">Status</label>
+        <input
+          id="statusDetail"
+          type="text"
+          readonly
+          class="mt-1 w-full border rounded-lg px-3 py-2 bg-gray-50"/>
+      </div>
+
+      <!-- Tombol Tutup -->
+      <div class="text-right pt-3">
+        <button
+          type="button"
+          onclick="closeDetailModal()"
+          class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition">
+          Tutup
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+
+    <footer class="p-4 bg-white text-center border-t">
+      <p class="text-sm text-gray-500">Copyright © SIWARU 2025</p>
+    </footer>
+  </div>
+
+<script src="js/absensiGURUBK.js"></script>
+  <div id="react-bridge" hidden></div>
+  <script type="module" src="/src/main.jsx"></script>
+</body>
+</html>

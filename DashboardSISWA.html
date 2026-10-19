@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+  <title>Siswa - Dashboard</title>
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
+  <style type="text/tailwindcss">
+    body {
+      font-family: 'Poppins', sans-serif;
+    }
+
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24
+    }
+  </style>
+</head>
+
+<body class="bg-gray-100 flex h-screen">
+  <!-- Sidebar -->
+  <aside id="sidebar"
+    class="fixed md:static inset-y-0 left-0 w-64 bg-[#343A3F] flex flex-col shadow-lg p-6 transform -translate-x-full md:translate-x-0 transition-transform duration-300 z-50">
+    <div class="flex flex-col items-center mb-8">
+      <img alt="SIWARU Logo" class="w-full h-20 object-contain" src="assets/SIWARU.png" />
+    </div>
+    <nav class="flex-1 space-y-3">
+      <a class="flex items-center px-4 py-2 bg-gray-700 text-white font-semibold rounded-lg" href="#">
+        <span class="material-symbols-outlined mr-3">home</span>
+        Dashboard
+      </a>
+      <a class="flex items-center px-4 py-2 text-gray-300 hover:bg-gray-700 hover:text-white rounded-lg" href="absensiSISWA.html">
+        <span class="material-symbols-outlined mr-3">assignment</span>
+        Absensi
+      </a>
+      <a class="flex items-center px-4 py-2 text-gray-300 hover:bg-gray-700 hover:text-white rounded-lg" href="jadwalSISWA.html">
+        <span class="material-symbols-outlined mr-3">calendar_month</span>
+        Jadwal
+      </a>
+    </nav>
+    <div class="p-4">
+      <a class="flex items-center px-4 py-2 text-gray-300 hover:bg-gray-700 hover:text-white rounded-lg" href="login.html">
+        <span class="material-symbols-outlined mr-3">logout</span>
+        Logout
+      </a>
+    </div>
+  </aside>
+
+  <!-- Overlay untuk HP -->
+  <div id="overlay" class="fixed inset-0 bg-black bg-opacity-50 hidden md:hidden z-40"></div>
+
+  <!-- Main Content -->
+  <div class="flex-1 flex flex-col min-h-screen">
+    <!-- Header -->
+    <header class="flex justify-between items-center p-4 bg-white border-b">
+      <div class="flex items-center gap-3">
+        <!-- Tombol burger hanya tampil di HP -->
+        <button id="menu-btn"
+          class="p-2 rounded-md hover:bg-gray-200 transition flex items-center justify-center md:hidden">
+          <span class="material-symbols-outlined text-gray-700">menu</span>
+        </button>
+        <h1 class="text-xl font-semibold">SISWA</h1>
+      </div>
+      <div class="flex items-center space-x-4">
+        <a href="profileSISWA.html" 
+          class="p-2 rounded-full hover:bg-gray-200 transition flex items-center justify-center">
+          <span class="material-symbols-outlined text-gray-500">person</span>
+        </a>
+      </div>
+    </header>
+
+    <!-- Content -->
+    <main class="flex-1 p-6 bg-gray-100">
+      <h2 class="text-2xl font-bold mb-6">Dashboard</h2>
+      <div class="flex gap-6 flex-wrap">
+        <!-- Card Data Absensi -->
+        <div
+          class="w-full sm:w-72 rounded-lg shadow-md bg-teal-400 text-black hover:scale-105 transition transform overflow-hidden">
+          <div class="flex justify-between items-start p-4">
+            <span class="text-lg font-semibold">Data Absensi</span>
+            <span class="material-symbols-outlined text-3xl text-black/50">assignment</span>
+          </div>
+          <div class="p-4">
+            <a href="absensiSISWA.html"
+              class="block w-full text-center bg-teal-600 text-white py-2 rounded-md hover:bg-teal-700 transition">
+              Lihat Detail
+            </a>
+          </div>
+        </div>
+
+        <!-- Card Data Jadwal -->
+        <div
+          class="w-full sm:w-72 rounded-lg shadow-md bg-blue-500 text-black hover:scale-105 transition transform overflow-hidden">
+          <div class="flex justify-between items-start p-4">
+            <span class="text-lg font-semibold">Data Jadwal</span>
+            <span class="material-symbols-outlined text-3xl text-black/50">calendar_month</span>
+          </div>
+          <div class="p-4">
+            <a href="jadwalSISWA.html"
+              class="block w-full text-center bg-blue-700 text-white py-2 rounded-md hover:bg-blue-800 transition">
+              Lihat Detail
+            </a>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="p-4 bg-white text-center border-t">
+      <p class="text-sm text-gray-500">Copyright@SIWARU2025</p>
+    </footer>
+  </div>
+
+  <!-- Script -->
+<script src="js/DashboardSISWA.js"></script>
+  <div id="react-bridge" hidden></div>
+  <script type="module" src="/src/main.jsx"></script>
+</body>
+
+</html>

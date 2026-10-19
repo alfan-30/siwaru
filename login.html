@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Login SIWARU</title>
+
+  <!-- Tailwind -->
+  <script src="https://cdn.tailwindcss.com?plugins=forms,typography"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <script>
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            primary: "#1d63ff",
+            "background-light": "#ffffff",
+            "background-dark": "#121212",
+            "gray-light": "#e0e0e0",
+            "gray-dark": "#333333",
+            "text-light": "#000000",
+            "text-dark": "#ffffff",
+          },
+          fontFamily: {
+            display: ["Poppins", "sans-serif"],
+          },
+          borderRadius: {
+            DEFAULT: "0.5rem",
+          },
+        },
+      },
+    };
+  </script>
+
+  <!-- Fonts & Icons -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+</head>
+
+<body class="font-display bg-background-light dark:bg-background-dark">
+  <div class="flex flex-col md:flex-row h-screen">
+    <!-- Kiri -->
+    <div class="w-full md:w-1/2 bg-gray-200 dark:bg-gray-800 flex items-center justify-center p-6">
+      <img src="assets/SiWARU.png" alt="SIWARU Logo" class="max-w-xs md:max-w-md w-full h-auto" />
+    </div>
+
+    <!-- Kanan -->
+    <div class="w-full md:w-1/2 flex items-center justify-center p-6">
+      <div class="max-w-sm w-full p-6 md:p-8 bg-white dark:bg-gray-900 rounded-lg shadow-md">
+        <h1 class="text-2xl md:text-3xl font-bold text-center mb-8 text-text-light dark:text-text-dark">
+          SELAMAT DATANG
+        </h1>
+
+					<!-- Ikon Sosial dengan Glow terbaru -->
+		<div class="flex justify-center space-x-6 mb-8">
+		  <a href="https://facebook.com" target="_blank">
+			<img src="assets/facebook.png" alt="Facebook"
+			  class="w-12 h-12 object-contain rounded-full cursor-pointer 
+					 transition-transform duration-300 hover:scale-110 hover:rotate-3
+					 shadow-lg hover:shadow-2xl 
+					 hover:drop-shadow-[0_0_18px_#0d47a1]" />
+		  </a>
+		  <a href="https://google.com" target="_blank">
+			<img src="assets/google.png" alt="Google"
+			  class="w-12 h-12 object-contain rounded-full cursor-pointer 
+					 transition-transform duration-300 hover:scale-110 hover:-rotate-3
+					 shadow-lg hover:shadow-2xl 
+					 hover:drop-shadow-[0_0_12px_#db4437]" />
+		  </a>
+		  <a href="https://x.com" target="_blank">
+			<img src="assets/x.png" alt="X"
+			  class="w-12 h-12 object-contain rounded-full cursor-pointer 
+					 transition-transform duration-300 hover:scale-110 hover:rotate-6
+					 shadow-lg hover:shadow-2xl 
+					 hover:drop-shadow-[0_0_25px_#000000]" />
+		  </a>
+		</div>
+
+        <!-- Form -->
+        <form id="loginForm">
+          <!-- Username -->
+          <div class="mb-4">
+            <label for="username" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+              Username
+            </label>
+            <input
+              id="username"
+              type="text"
+              placeholder="Masukkan username Anda"
+              class="w-full px-4 py-2 bg-gray-light dark:bg-gray-dark border-none rounded-md
+                     focus:ring-0 text-text-light dark:text-text-dark placeholder-gray-500 dark:placeholder-gray-400"
+            />
+          </div>
+
+          <!-- Password -->
+          <div class="mb-6">
+            <label for="password" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+              Password
+            </label>
+            <div class="relative">
+			  <input
+				id="password"
+				type="password"
+				placeholder="Masukkan password Anda"
+				class="w-full px-4 py-2 bg-gray-light dark:bg-gray-dark border-none rounded-md
+					   focus:ring-0 text-text-light dark:text-text-dark placeholder-gray-500 dark:placeholder-gray-400"
+			  />
+			  <button
+				type="button"
+				class="absolute inset-y-0 right-0 px-3 flex items-center"
+				id="togglePassword"
+			  >
+				<span class="material-icons text-gray-500 dark:text-gray-400">visibility_off</span>
+			  </button>
+			</div>
+            <a href="#" id="forgotPassword" class="text-xs text-gray-500 dark:text-gray-400 hover:underline float-right mt-1">
+              Lupa Password?
+            </a>
+          </div>
+
+          <!-- Tombol Login -->
+          <button
+            type="submit"
+            class="w-full bg-primary text-white py-2 rounded-md font-semibold hover:bg-blue-600 transition-colors"
+          >
+            Login
+          </button>
+        </form>
+
+        <!-- Registrasi -->
+        <p class="text-sm text-center mt-4 text-gray-600 dark:text-gray-400">
+          Tidak punya akun? <a href="registrasi.html" class="text-primary hover:underline">Registrasi</a>
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- SCRIPT LOGIN -->
+  <script src="js/login.js"></script>
+  <div id="react-bridge" hidden></div>
+  <script type="module" src="/src/main.jsx"></script>
+</body>
+</html>

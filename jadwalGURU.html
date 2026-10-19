@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+  <title>Guru - Jadwal</title>
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
+  <style type="text/tailwindcss">
+    body {
+      font-family: 'Poppins', sans-serif;
+    }
+
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24
+    }
+  </style>
+</head>
+
+<body class="bg-gray-100 flex flex-col md:flex-row min-h-screen">
+  <!-- Sidebar -->
+  <aside id="sidebar" 
+  class="w-64 bg-[#343A3F] flex flex-col shadow-lg p-6 fixed md:static inset-y-0 left-0 transform -translate-x-full md:translate-x-0 transition-transform duration-300 z-50">
+    <div class="flex flex-col items-center mb-8">
+      <img alt="SIWARU Logo" class="w-full h-20 object-contain" src="assets/SIWARU.png" />
+    </div>
+    <nav class="flex-1 space-y-3">
+      <a class="flex items-center px-4 py-2 text-gray-300 hover:bg-gray-700 hover:text-white rounded-lg" href="DashboardGURU.html">
+        <span class="material-symbols-outlined mr-3">home</span>
+        Dashboard
+      </a>
+      <a class="flex items-center px-4 py-2 text-gray-300 hover:bg-gray-700 hover:text-white rounded-lg" href="absensiGURU.html">
+        <span class="material-symbols-outlined mr-3">assignment</span>
+        Absensi
+      </a>
+      <!-- Jadwal dengan highlight aktif -->
+      <a class="flex items-center px-4 py-2 bg-gray-700 text-white font-semibold rounded-lg" href="jadwalGURU.html">
+        <span class="material-symbols-outlined mr-3">calendar_month</span>
+        Jadwal
+      </a>
+    </nav>
+    <div class="p-4">
+      <a class="flex items-center px-4 py-2 text-gray-300 hover:bg-gray-700 hover:text-white rounded-lg" href="login.html">
+        <span class="material-symbols-outlined mr-3">logout</span>
+        Logout
+      </a>
+    </div>
+  </aside>
+
+  <!-- Overlay (hanya muncul di mobile saat sidebar terbuka) -->
+  <div id="overlay" class="fixed inset-0 bg-black bg-opacity-50 hidden z-30 md:hidden"></div>
+
+  <!-- Main Content -->
+  <div class="flex-1 flex flex-col min-h-screen">
+    <!-- Header -->
+    <header class="flex justify-between items-center p-4 bg-white border-b">
+      <div class="flex items-center">
+        <!-- Tombol menu -->
+		<button data-toggle="sidebar" class="mr-4 text-gray-700 md:hidden">
+		  <span class="material-symbols-outlined">menu</span>
+		</button>
+        <h1 class="text-xl font-semibold">Guru</h1>
+      </div>
+      <div class="flex items-center space-x-4">
+	  <a href="profileGURU.html" 
+		 class="p-2 rounded-full hover:bg-gray-200 transition flex items-center justify-center">
+		<span class="material-symbols-outlined text-gray-500">person</span>
+	  </a>
+    </header>
+
+    <!-- Content -->
+    <main class="flex-1 p-6 bg-gray-100">
+      <h2 class="text-2xl font-bold mb-4">Jadwal</h2>
+      <div class="bg-white p-6 rounded-lg shadow-md">
+        <div class="flex items-center mb-6">
+          <!-- Search -->
+			<div class="relative w-full max-w-xs">
+			  <span
+				class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">search</span>
+			  <input id="searchInput"
+				class="pl-10 pr-4 py-2 w-full border rounded-md bg-transparent focus:outline-none focus:ring-2 focus:ring-blue-500"
+				placeholder="Search" type="text" />
+			</div>
+        </div>
+
+        <!-- Table -->
+        <div class="overflow-x-auto">
+          <table class="w-full text-xs md:text-sm text-center">
+            <thead>
+              <tr class="bg-gray-700 text-white">
+                <th class="p-4 font-semibold">#</th>
+                <th class="p-4 font-semibold">Kode Jadwal</th>
+				<th class="p-4 font-semibold">Mata Pelajaran</th>
+                <th class="p-4 font-semibold">Guru Pengajar</th>
+                <th class="p-4 font-semibold">Tanggal</th>
+                <th class="p-4 font-semibold">Jam</th>
+                <th class="p-4 font-semibold">Ruang</th>
+                <th class="p-4 font-semibold">Kelas</th>
+                <th class="p-4 font-semibold">Aksi</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="border-b">
+                <td class="p-4">1</td>
+                <td class="p-4 font-medium">0082768950</td>
+				<td class="p-4">Pengolahan Citra Digital</td>
+                <td class="p-4">Calvin S.T</td>
+                <td class="p-4">29-08-2025</td>
+                <td class="p-4">07.20 - 08.30</td>
+                <td class="p-4">C307</td>
+                <td class="p-4">2 TKJ 4</td>
+                <td class="p-4 text-blue-600 cursor-pointer"
+                  onclick="openDetail('0082768950','Pengolahan Citra Digital','Yoga S.T','29-08-2025','07.20 - 08.30','C307','2 TKJ 4')">
+                  Detail
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="p-4 bg-white text-center border-t">
+      <p class="text-sm text-gray-500">Copyright@SIWARU2025</p>
+    </footer>
+  </div>
+
+  <!-- Modal Detail (Read-only) -->
+  <div id="detailModal" class="fixed inset-0 bg-black bg-opacity-50 hidden flex items-center justify-center">
+    <div class="bg-white rounded-lg shadow-lg w-full max-w-md p-6 max-h-[80vh] overflow-y-auto">
+      <h3 class="text-lg font-semibold mb-4">Detail Jadwal</h3>
+      <form class="space-y-4">
+        <div>
+          <label class="block text-sm font-medium">Kode Jadwal</label>
+          <input id="detailKode" type="text" class="mt-1 w-full border rounded-lg px-3 py-2" readonly />
+        </div>
+		<div>
+          <label class="block text-sm font-medium">Mata Pelajaran</label>
+          <input id="detailMapel" type="text" class="mt-1 w-full border rounded-lg px-3 py-2" readonly />
+        </div>
+        <div>
+          <label class="block text-sm font-medium">Guru Pengajar</label>
+          <input id="detailGuru" type="text" class="mt-1 w-full border rounded-lg px-3 py-2" readonly />
+        </div>
+        <div>
+          <label class="block text-sm font-medium">Tanggal</label>
+          <input id="detailTanggal" type="text" class="mt-1 w-full border rounded-lg px-3 py-2" readonly />
+        </div>
+        <div>
+          <label class="block text-sm font-medium">Jam</label>
+          <input id="detailJam" type="text" class="mt-1 w-full border rounded-lg px-3 py-2" readonly />
+        </div>
+        <div>
+          <label class="block text-sm font-medium">Ruang</label>
+          <input id="detailRuang" type="text" class="mt-1 w-full border rounded-lg px-3 py-2" readonly />
+        </div>
+        <div>
+          <label class="block text-sm font-medium">Kelas</label>
+          <input id="detailKelas" type="text" class="mt-1 w-full border rounded-lg px-3 py-2" readonly />
+        </div>
+        <div class="flex justify-end pt-4">
+          <button type="button" onclick="closeDetail()"
+            class="px-4 py-2 rounded-lg bg-blue-500 text-white hover:bg-blue-600">Tutup</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Script -->
+<script src="js/jadwalGURU.js"></script>
+  <div id="react-bridge" hidden></div>
+  <script type="module" src="/src/main.jsx"></script>
+</body>
+</html>
