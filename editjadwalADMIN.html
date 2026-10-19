@@ -146,20 +146,7 @@
               </tr>
             </thead>
             <tbody>
-              <tr class="border-b cursor-pointer">
-                <td class="p-4">1</td>
-                <td class="p-4 font-medium">0082768950</td>
-                <td class="p-4">Matematika Diskrit</td>
-				<td class="p-4">Faiskal M.kom</td>
-                <td class="p-4">2025-08-29</td>
-                <td class="p-4">08.00-12.00</td>
-                <td class="p-4">C307</td>
-                <td class="p-4">2 TKJ 4</td>
-				<td class="p-4 text-blue-600 cursor-pointer"
-                  onclick="openDetail('0082768950','Matematika Diskrit','Faiskal M.kom','29-08-2025','08.00-12.00','C307','2 TKJ 4')">
-                  Detail
-                </td>
-              </tr>
+              <tr><td class="p-4 text-gray-500" colspan="9">Memuat jadwal...</td></tr>
             </tbody>
           </table>
         </div>
@@ -173,7 +160,7 @@
   </div>
 
   <!-- Modal Form (Tambah) -->
-  <div id="absensiModal" class="fixed inset-0 bg-black bg-opacity-50 hidden flex items-center justify-center">
+  <div id="absensiModal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center">
 	<div class="bg-white rounded-lg shadow-lg w-full max-w-md max-h-[80vh] overflow-y-auto p-6">
       <h3 class="text-lg font-semibold mb-4">Form Tambah</h3>
       <form class="space-y-4">
@@ -228,7 +215,7 @@
   </div>
   
   <!-- Modal Edit Jadwal -->
-	<div id="modalEdit" class="fixed inset-0 bg-black bg-opacity-50 hidden flex items-center justify-center">
+	<div id="modalEdit" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center">
 	  <div class="bg-white rounded-lg shadow-lg w-full max-w-md max-h-[80vh] overflow-y-auto p-6">
 		<h3 class="text-lg font-semibold mb-4">Form Edit Jadwal</h3>
 		<form class="space-y-4">
@@ -280,7 +267,7 @@
 	</div>
   
   <!-- Modal Detail (Read-only) -->
-  <div id="detailModal" class="fixed inset-0 bg-black bg-opacity-50 hidden flex items-center justify-center">
+  <div id="detailModal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center">
 	<div class="bg-white rounded-lg shadow-lg w-full max-w-lg max-h-[80vh] overflow-y-auto p-6">
       <h3 class="text-lg font-semibold mb-4">Detail Jadwal</h3>
       <form class="space-y-4">
@@ -320,7 +307,7 @@
   </div>
 
   <!-- Script -->
-<script src="js/editjadwalADMIN.js"></script>
+<script type="module" src="/src/schedules.js"></script>
   <div id="react-bridge" hidden></div>
   <script type="module" src="/src/main.jsx"></script>
 </body>

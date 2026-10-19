@@ -102,20 +102,7 @@
               </tr>
             </thead>
             <tbody>
-              <tr class="border-b">
-                <td class="p-4">1</td>
-				<td class="p-4 font-medium">0082768950</td>
-                <td class="p-4 font-medium">Pengolahan Citra Digital</td>
-                <td class="p-4">Yoga S.T</td>
-                <td class="p-4">29-08-2025</td>
-                <td class="p-4">07.20</td>
-                <td class="p-4">C307</td>
-                <td class="p-4">2 TKJ 4</td>
-                <td class="p-4 text-blue-600 cursor-pointer"
-                  onclick="openDetail('0082768950','Pengolahan Citra Digital','Yoga S.T','29-08-2025','07.20','C307','2 TKJ 4')">
-                  Detail
-                </td>
-              </tr>
+              <tr><td class="p-4 text-gray-500" colspan="9">Memuat jadwal...</td></tr>
             </tbody>
           </table>
         </div>
@@ -129,7 +116,7 @@
   </div>
 
   <!-- Modal Detail (Read-only) -->
-  <div id="detailModal" class="fixed inset-0 bg-black bg-opacity-50 hidden flex items-center justify-center">
+  <div id="detailModal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center">
     <div class="bg-white rounded-lg shadow-lg w-full max-w-md p-6 max-h-[80vh] overflow-y-auto">
       <h3 class="text-lg font-semibold mb-4">Detail Jadwal</h3>
       <form class="space-y-4">
@@ -170,7 +157,7 @@
   </div>
 
   <!-- Script -->
-<script src="js/jadwalSISWA.js"></script>
+<script type="module" src="/src/schedules.js"></script>
   <div id="react-bridge" hidden></div>
   <script type="module" src="/src/main.jsx"></script>
 </body>

@@ -97,7 +97,7 @@
 		<div
 		  class="bg-blue-500 text-black p-6 rounded-lg shadow-md hover:shadow-xl hover:scale-105 hover:-translate-y-1 transition-transform duration-300">
 		  <div class="flex items-center justify-between mb-4">
-			<p class="font-semibold">Data Jadwal</p>
+			<p class="font-semibold">Data Jadwal <span id="countSchedules" class="ml-2 inline-flex min-w-7 justify-center rounded-full bg-white/80 px-2 py-1 text-sm">—</span></p>
 			<span class="material-symbols-outlined text-4xl text-blue-700 opacity-50">calendar_month</span>
 		  </div>
 		  <a href="editjadwalADMIN.html"
@@ -110,7 +110,7 @@
 	<div
 	  class="bg-yellow-400 text-black p-6 rounded-lg shadow-md hover:shadow-xl hover:scale-105 hover:-translate-y-1 transition-transform duration-300">
 	  <div class="flex items-center justify-between mb-4">
-		<p class="font-semibold">Riwayat</p>
+		<p class="font-semibold">Riwayat / Absensi <span id="countAttendance" class="ml-2 inline-flex min-w-7 justify-center rounded-full bg-white/80 px-2 py-1 text-sm">—</span></p>
 		<span class="material-symbols-outlined text-4xl text-yellow-700 opacity-50">bookmarks</span>
 	  </div>
 	  <a href="riwayatADMIN.html"
@@ -123,7 +123,7 @@
 	<div
 	  class="bg-red-500 text-black p-6 rounded-lg shadow-md hover:shadow-xl hover:scale-105 hover:-translate-y-1 transition-transform duration-300">
 	  <div class="flex items-center justify-between mb-4">
-		<p class="font-semibold">Data Guru</p>
+		<p class="font-semibold">Data Guru <span id="countTeachers" class="ml-2 inline-flex min-w-7 justify-center rounded-full bg-white/80 px-2 py-1 text-sm">—</span></p>
 		<span class="material-symbols-outlined text-4xl text-red-700 opacity-50">groups</span>
 	  </div>
 	  <a href="dataguruADMIN.html"
@@ -136,7 +136,7 @@
 	<div
 	  class="bg-cyan-500 text-black p-6 rounded-lg shadow-md hover:shadow-xl hover:scale-105 hover:-translate-y-1 transition-transform duration-300">
 	  <div class="flex items-center justify-between mb-4">
-		<p class="font-semibold">Data Siswa</p>
+		<p class="font-semibold">Data Siswa <span id="countStudents" class="ml-2 inline-flex min-w-7 justify-center rounded-full bg-white/80 px-2 py-1 text-sm">—</span></p>
 		<span class="material-symbols-outlined text-4xl text-cyan-700 opacity-50">groups</span>
 	  </div>
 	  <a href="datasiswaADMIN.html"
@@ -154,6 +154,7 @@
 
   <!-- Script -->
 <script src="js/DashboardADMIN.js"></script>
+  <script type="module" src="/src/admin-dashboard.js"></script>
   <div id="react-bridge" hidden></div>
   <script type="module" src="/src/main.jsx"></script>
 </body>
