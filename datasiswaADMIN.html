@@ -1,292 +1,101 @@
 <!DOCTYPE html>
-<html lang="en">
-
+<html lang="id">
 <head>
   <meta charset="utf-8" />
   <meta content="width=device-width, initial-scale=1.0" name="viewport" />
-  <title>Admin - Data Siswa</title>
+  <title>Data Siswa - Admin</title>
   <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet" />
-  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
-  <!-- SweetAlert -->
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
   <style type="text/tailwindcss">
-    body {
-      font-family: 'Poppins', sans-serif;
-    }
-
-    .material-symbols-outlined {
-      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24
+    body { font-family: 'Poppins', sans-serif; }
+    .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24 }
+    @media print {
+      aside, header, footer, #overlay, .no-print, [data-act] { display: none !important; }
+      .md\:pl-64 { padding-left: 0 !important; }
+      body { background: #fff !important; }
     }
   </style>
+  <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32.png" />
+  <link rel="icon" type="image/png" sizes="16x16" href="assets/favicon-16.png" />
+  <link rel="shortcut icon" href="assets/favicon.ico" />
+  <link rel="apple-touch-icon" sizes="180x180" href="assets/apple-touch-icon.png" />
 </head>
-
-<body class="bg-gray-100 flex flex-col md:flex-row min-h-screen">
-  <!-- Sidebar -->
-  <aside id="sidebar" 
-    class="w-64 bg-[#343A3F] flex flex-col shadow-lg p-6 fixed md:static inset-y-0 left-0 transform -translate-x-full md:translate-x-0 transition-transform duration-300 z-50">
-    <div class="flex flex-col items-center mb-8">
+<body class="bg-gray-100 min-h-screen" data-page="siswa-data" data-role="admin">
+  <aside id="sidebar" class="fixed inset-y-0 left-0 w-64 bg-[#343A3F] flex flex-col shadow-lg p-6 transform -translate-x-full transition-transform duration-300 z-50 md:translate-x-0">
+    <div class="flex flex-col items-center mb-4">
       <img alt="SIWARU Logo" class="w-full h-20 object-contain" src="assets/SIWARU.png" />
     </div>
-    <nav class="flex-1 space-y-3">
-      <!-- Dashboard -->
-      <a class="flex items-center px-4 py-2 text-gray-300 hover:bg-gray-700 hover:text-white rounded-lg" href="DashboardADMIN.html">
-        <span class="material-symbols-outlined mr-3">home</span>
-        Dashboard
+    <div class="text-center mb-6">
+      <p data-fill="nama" class="text-white font-bold text-lg leading-tight">&nbsp;</p>
+      <p data-fill="role" class="text-gray-300 text-sm">Admin</p>
+    </div>
+    <nav class="flex-1 space-y-2 overflow-y-auto">
+      <a href="DashboardADMIN.html" class="flex items-center px-4 py-2.5 rounded-lg text-gray-300 hover:bg-slate-600/40 hover:text-white">
+        <span class="material-symbols-outlined mr-3">home</span>Dashboard
       </a>
-
-      <!-- Jadwal -->
-      <a class="flex items-center px-4 py-2 text-gray-300 hover:bg-gray-700 hover:text-white rounded-lg" href="editjadwalADMIN.html">
-        <span class="material-symbols-outlined mr-3">calendar_month</span>
-        Jadwal
+      <a href="editjadwalADMIN.html" class="flex items-center px-4 py-2.5 rounded-lg text-gray-300 hover:bg-slate-600/40 hover:text-white">
+        <span class="material-symbols-outlined mr-3">calendar_month</span>Jadwal
       </a>
-
-      <!-- Bio Data -->
+      <a href="absensiADMIN.html" class="flex items-center px-4 py-2.5 rounded-lg text-gray-300 hover:bg-slate-600/40 hover:text-white">
+        <span class="material-symbols-outlined mr-3">checklist</span>Absensi
+      </a>
       <div>
-        <button id="bioToggle" aria-expanded="true"
-          class="flex items-center justify-between w-full px-4 py-2 text-gray-300 hover:bg-gray-700 hover:text-white rounded-lg">
-          <span class="flex items-center">
-            <span class="material-symbols-outlined mr-3">badge</span>
-            Bio Data
-          </span>
-          <span id="bioChevron" class="material-symbols-outlined transition-transform duration-200">expand_more</span>
+        <button id="dataToggle" type="button" class="flex items-center justify-between w-full px-4 py-2.5 rounded-lg bg-slate-600/60 text-white">
+          <span class="flex items-center"><span class="material-symbols-outlined mr-3">folder</span>Data</span>
+          <span id="dataChevron" class="material-symbols-outlined">expand_more</span>
         </button>
-        <!-- Submenu -->
-        <div id="submenuBio" class="ml-10 mt-1 space-y-1" aria-hidden="false">
-          <a href="dataguruADMIN.html" class="block px-4 py-2 text-gray-400 hover:text-white hover:bg-gray-600 rounded-md">Data Guru</a>
-          <a href="datasiswaADMIN.html" class="block px-4 py-2 bg-gray-700 text-white font-semibold rounded-md">Data Siswa</a>
+        <div id="dataSub" class="ml-6 mt-1 space-y-1 hidden">
+        <a href="dataguruADMIN.html" class="flex items-center px-4 py-2.5 rounded-lg text-gray-300 hover:bg-slate-600/40 hover:text-white"><span class="material-symbols-outlined mr-3">co_present</span>Guru</a>
+        <a href="datasiswaADMIN.html" class="flex items-center px-4 py-2.5 rounded-lg bg-slate-600/60 text-white font-semibold"><span class="material-symbols-outlined mr-3">groups</span>Siswa</a>
+        <a href="kelasADMIN.html" class="flex items-center px-4 py-2.5 rounded-lg text-gray-300 hover:bg-slate-600/40 hover:text-white"><span class="material-symbols-outlined mr-3">meeting_room</span>Kelas</a>
+        <a href="mapelADMIN.html" class="flex items-center px-4 py-2.5 rounded-lg text-gray-300 hover:bg-slate-600/40 hover:text-white"><span class="material-symbols-outlined mr-3">menu_book</span>Mapel</a>
         </div>
       </div>
-
-      <!-- Riwayat -->
-      <a class="flex items-center px-4 py-2 text-gray-300 hover:bg-gray-700 hover:text-white rounded-lg" href="riwayatADMIN.html">
-        <span class="material-symbols-outlined mr-3">history</span>
-        Riwayat
+      <a href="riwayatADMIN.html" class="flex items-center px-4 py-2.5 rounded-lg text-gray-300 hover:bg-slate-600/40 hover:text-white">
+        <span class="material-symbols-outlined mr-3">description</span>Laporan
       </a>
     </nav>
-
-    <!-- Logout -->
-    <div class="px-2 mb-4">
-      <a href="login.html"
-        class="flex items-center px-4 py-2 text-gray-300 hover:bg-gray-700 hover:text-white rounded-lg">
-        <span class="material-symbols-outlined mr-3">logout</span>
-        Logout
+    <div class="border-t border-gray-600 pt-4 mt-4">
+      <a id="btnLogout" href="login.html" class="flex items-center px-6 py-2.5 text-gray-300 hover:text-white rounded-lg">
+        <span class="material-symbols-outlined mr-4">logout</span>Logout
       </a>
     </div>
   </aside>
+  <div id="overlay" class="fixed inset-0 bg-black/50 hidden z-40 md:hidden"></div>
 
-  <!-- Main Content -->
-  <div class="flex-1 flex flex-col min-h-screen">
-    <!-- Header -->
-    <header class="flex justify-between items-center p-4 bg-white border-b">
+  <div class="flex flex-col min-h-screen md:pl-64">
+    <header class="flex justify-between items-center px-6 py-5 bg-white border-b">
       <div class="flex items-center">
-        <button data-toggle="sidebar" class="mr-4 text-gray-700 md:hidden">
-          <span class="material-symbols-outlined">menu</span>
-        </button>
-        <h1 class="text-xl font-semibold">Admin</h1>
+        <button id="burgerBtn" type="button" class="mr-4 text-gray-700 md:hidden"><span class="material-symbols-outlined">menu</span></button>
+        <h1 class="text-xl font-semibold">Sistem Absensi Siswa Dan Guru</h1>
       </div>
-      <div class="flex items-center space-x-4">
-        <a href="profileADMIN.html" 
-           class="p-2 rounded-full hover:bg-gray-200 transition flex items-center justify-center">
-          <span class="material-symbols-outlined text-gray-500">person</span>
-        </a>
-      </div>
+      <a href="profileADMIN.html" class="p-2 rounded-full hover:bg-gray-100 flex items-center justify-center"><span class="material-symbols-outlined text-gray-800">person</span></a>
     </header>
 
-    <!-- Content -->
     <main class="flex-1 p-6 bg-gray-100">
-      <h2 class="text-2xl font-bold mb-4">Kelola Data Siswa</h2>
+      <h2 class="text-3xl font-bold mb-6">Kelola Data Siswa</h2>
       <div class="bg-white p-6 rounded-lg shadow-md">
-
-        <!-- Tombol Aksi & Search -->
-        <div class="flex justify-between items-center mb-6">
-          <div class="flex space-x-1 md:space-x-2 mr-3 md:mr-6">
-            <button onclick="openAbsensiForm()"
-              class="bg-blue-500 w-10 h-10 md:w-auto md:h-auto p-3 rounded-lg text-white hover:bg-blue-600 transition flex items-center justify-center">
-              <img src="assets/tambah.png" alt="Tambah" class="w-5 h-5" />
-            </button>
-            <button onclick="openUpdateForm()"
-              class="bg-green-500 w-10 h-10 md:w-auto md:h-auto p-3 rounded-lg text-white hover:bg-green-600 transition flex items-center justify-center">
-              <img src="assets/update.png" alt="Update" class="w-5 h-5" />
-            </button>
-            <button onclick="confirmDelete()"
-              class="bg-red-500 w-10 h-10 md:w-auto md:h-auto p-3 rounded-lg text-white hover:bg-red-600 transition flex items-center justify-center">
-              <img src="assets/hapus.png" alt="Hapus" class="w-5 h-5" />
-            </button>
-          </div>
+        <div class="flex justify-between items-center mb-6 gap-4">
+          <button id="btnAdd" type="button" title="Tambah" class="bg-blue-500 hover:bg-blue-600 text-white w-12 h-12 rounded-lg flex items-center justify-center"><span class="material-symbols-outlined">add</span></button>
           <div class="relative w-full max-w-xs">
             <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">search</span>
-            <input id="searchInput"
-              class="pl-10 pr-4 py-2 w-full border rounded-md bg-transparent focus:outline-none focus:ring-2 focus:ring-blue-500"
-              placeholder="Search" type="text" />
+            <input id="searchInput" type="text" placeholder="Search" class="pl-10 pr-4 py-2 w-full border border-gray-400 rounded-md bg-transparent focus:outline-none focus:ring-2 focus:ring-blue-500" />
           </div>
         </div>
-
-        <!-- Table -->
         <div class="overflow-x-auto">
-          <table class="w-full text-xs md:text-sm text-center">
-            <thead>
-              <tr class="bg-gray-700 text-white">
-                <th class="p-4 font-semibold">#</th>
-                <th class="p-4 font-semibold">Nama</th>
-                <th class="p-4 font-semibold">NIS</th>
-                <th class="p-4 font-semibold">No.tlp</th>
-                <th class="p-4 font-semibold">Alamat</th>
-                <th class="p-4 font-semibold">Jenis Kelamin</th>
-                <th class="p-4 font-semibold">Status</th>
-                <th class="p-4 font-semibold">Aksi</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr class="border-b cursor-pointer">
-                <td class="p-4">1</td>
-                <td class="p-4 font-medium">Viko Frendy</td>
-                <td class="p-4">09765845</td>
-                <td class="p-4">04887912367</td>
-                <td class="p-4">Sidoarjo</td>
-                <td class="p-4">Laki-Laki</td>
-                <td class="p-4">
-                  <span class="bg-green-500 text-white px-3 py-1 rounded-full text-xs">Aktif</span>
-                </td>
-                <td class="p-4 text-blue-600 cursor-pointer"
-                  onclick="openDetail('Viko Frendy','09765845','04887912367','Sidoarjo','Laki-Laki','Aktif')">
-                  Detail
-                </td>
-              </tr>
-            </tbody>
+          <table class="w-full text-sm text-center">
+            <thead><tr class="bg-slate-700 text-white"><th class="p-4 font-semibold">No</th><th class="p-4 font-semibold">NIS</th><th class="p-4 font-semibold">Nama</th><th class="p-4 font-semibold">Kelas</th><th class="p-4 font-semibold">No. Telepon</th><th class="p-4 font-semibold">Alamat</th><th class="p-4 font-semibold">Jenis Kelamin</th><th class="p-4 font-semibold">Email</th><th class="p-4 font-semibold">Password</th><th class="p-4 font-semibold">Aksi</th></tr></thead>
+            <tbody id="tbody"><tr><td colspan="20" class="p-6 text-gray-500">Memuat data...</td></tr></tbody>
           </table>
         </div>
       </div>
     </main>
-
-    <!-- Footer -->
     <footer class="p-4 bg-white text-center border-t">
-      <p class="text-sm text-gray-500">Copyright@SIWARU2025</p>
+      <p class="text-sm text-gray-500">Copyright &copy; SIWARU 2025</p>
     </footer>
   </div>
-
-  <!-- Modal Form (Tambah) -->
-  <div id="absensiModal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center">
-    <div class="bg-white rounded-lg shadow-lg w-full max-w-md p-6 max-h-[90vh] overflow-y-auto">
-      <h3 class="text-lg font-semibold mb-4">Form Tambah Data Siswa</h3>
-      <form class="space-y-4">
-        <div>
-          <label class="block text-sm font-medium">Nama</label>
-          <input type="text" class="mt-1 w-full border rounded-lg px-3 py-2" />
-        </div>
-        <div>
-          <label class="block text-sm font-medium">NIS</label>
-          <input type="text" class="mt-1 w-full border rounded-lg px-3 py-2" />
-        </div>
-        <div>
-          <label class="block text-sm font-medium">No.tlp</label>
-          <input type="text" class="mt-1 w-full border rounded-lg px-3 py-2" />
-        </div>
-        <div>
-          <label class="block text-sm font-medium">Alamat</label>
-          <input type="text" class="mt-1 w-full border rounded-lg px-3 py-2" />
-        </div>
-        <div>
-          <label class="block text-sm font-medium">Jenis Kelamin</label>
-          <select class="mt-1 w-full border rounded-lg px-3 py-2">
-            <option value="">Pilih Jenis Kelamin</option>
-            <option value="Laki-Laki">Laki-Laki</option>
-            <option value="Perempuan">Perempuan</option>
-          </select>
-        </div>
-        <div>
-          <label class="block text-sm font-medium">Status</label>
-          <input type="text" class="mt-1 w-full border rounded-lg px-3 py-2" />
-        </div>
-        <div class="flex justify-end space-x-3 pt-4">
-          <button type="button" onclick="closeAbsensiForm()" class="px-4 py-2 rounded-lg border">Batal</button>
-          <button type="submit" class="px-4 py-2 rounded-lg bg-blue-500 text-white hover:bg-blue-600">Simpan</button>
-        </div>
-      </form>
-    </div>
-  </div>
-
-  <!-- Modal Form (Update) -->
-  <div id="modalEdit" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center">
-    <div class="bg-white rounded-lg shadow-lg w-full max-w-md max-h-[80vh] overflow-y-auto p-6">
-      <h3 class="text-lg font-semibold mb-4">Form Edit Data Siswa</h3>
-      <form class="space-y-4">
-        <div>
-          <label class="block text-sm font-medium">Nama</label>
-          <input type="text" class="mt-1 w-full border rounded-lg px-3 py-2" />
-        </div>
-        <div>
-          <label class="block text-sm font-medium">NIS</label>
-          <input type="text" class="mt-1 w-full border rounded-lg px-3 py-2" />
-        </div>
-        <div>
-          <label class="block text-sm font-medium">No.tlp</label>
-          <input type="text" class="mt-1 w-full border rounded-lg px-3 py-2" />
-        </div>
-        <div>
-          <label class="block text-sm font-medium">Alamat</label>
-          <input type="text" class="mt-1 w-full border rounded-lg px-3 py-2" />
-        </div>
-        <div>
-          <label class="block text-sm font-medium">Jenis Kelamin</label>
-          <select class="mt-1 w-full border rounded-lg px-3 py-2">
-            <option value="">Pilih Jenis Kelamin</option>
-            <option value="Laki-Laki">Laki-Laki</option>
-            <option value="Perempuan">Perempuan</option>
-          </select>
-        </div>
-        <div>
-          <label class="block text-sm font-medium">Status</label>
-          <input type="text" class="mt-1 w-full border rounded-lg px-3 py-2" />
-        </div>
-        <div class="flex justify-end space-x-3 pt-4">
-          <button type="button" onclick="closeModal('modalEdit')" class="px-4 py-2 rounded-lg border">Batal</button>
-          <button type="submit" class="px-4 py-2 rounded-lg bg-blue-500 text-white hover:bg-blue-600">Simpan</button>
-        </div>
-      </form>
-    </div>
-  </div>
-
-  <!-- Modal Detail (Read-only) -->
-  <div id="detailModal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center">
-    <div class="bg-white rounded-lg shadow-lg w-full max-w-md p-6 max-h-[90vh] overflow-y-auto">
-      <h3 class="text-lg font-semibold mb-4">Detail Data Siswa</h3>
-      <form class="space-y-4">
-        <div>
-          <label class="block text-sm font-medium">Nama</label>
-          <input id="detailNama" type="text" class="mt-1 w-full border rounded-lg px-3 py-2" readonly />
-        </div>
-        <div>
-          <label class="block text-sm font-medium">NIS</label>
-          <input id="detailNip" type="text" class="mt-1 w-full border rounded-lg px-3 py-2" readonly />
-        </div>
-        <div>
-          <label class="block text-sm font-medium">No.tlp</label>
-          <input id="detailNotlp" type="text" class="mt-1 w-full border rounded-lg px-3 py-2" readonly />
-        </div>
-        <div>
-          <label class="block text-sm font-medium">Alamat</label>
-          <input id="detailAlamat" type="text" class="mt-1 w-full border rounded-lg px-3 py-2" readonly />
-        </div>
-        <div>
-          <label class="block text-sm font-medium">Jenis Kelamin</label>
-          <input id="detailKelamin" type="text" class="mt-1 w-full border rounded-lg px-3 py-2" readonly />
-        </div>
-        <div>
-          <label class="block text-sm font-medium">Status</label>
-          <input id="detailStatus" type="text" class="mt-1 w-full border rounded-lg px-3 py-2" readonly />
-        </div>
-        <div class="flex justify-end pt-4">
-          <button type="button" onclick="closeDetail()" class="px-4 py-2 rounded-lg bg-blue-500 text-white hover:bg-blue-600">Tutup</button>
-        </div>
-      </form>
-    </div>
-  </div>
-
-  <!-- Script -->
-  <script src="js/datasiswaADMIN.js"></script>
-  <div id="react-bridge" hidden></div>
-  <script type="module" src="/src/main.jsx"></script>
+  <script type="module" src="/src/panel.js"></script>
 </body>
-
 </html>

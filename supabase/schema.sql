@@ -90,7 +90,7 @@ as $$ select coalesce(public.current_jabatan() in ('admin','administrator'), fal
 create or replace function public.is_staff()
 returns boolean language sql stable security definer set search_path = public
 as $$ select coalesce(public.current_jabatan() in
-  ('admin','administrator','guru','guru bk','gurubk','guru_mapel','guru mapel'), false) $$;
+  ('admin','administrator','guru','guru_mapel','guru mapel'), false) $$;
 
 revoke all on function public.current_jabatan() from public;
 revoke all on function public.is_admin() from public;
@@ -185,7 +185,7 @@ create policy "profile update own" on public.profiles for update to authenticate
 revoke update on public.profiles from authenticated;
 grant update (nama, kelas, no_tlp, alamat, jenis_kelamin) on public.profiles to authenticated;
 
--- attendance: guru/siswa hanya melihat miliknya, staf melihat semua; hapus/ubah hanya admin & Guru BK.
+-- attendance: guru/siswa hanya melihat miliknya, staf melihat semua; hapus/ubah hanya admin.
 drop policy if exists "attendance select" on public.attendance;
 create policy "attendance select" on public.attendance for select to authenticated
   using (dicatat_oleh = auth.uid() or public.is_staff());
@@ -194,8 +194,8 @@ create policy "attendance insert" on public.attendance for insert to authenticat
   with check (dicatat_oleh = auth.uid() or public.is_admin());
 drop policy if exists "attendance update" on public.attendance;
 create policy "attendance update" on public.attendance for update to authenticated
-  using (public.is_admin() or public.current_jabatan() in ('guru bk','gurubk'))
-  with check (public.is_admin() or public.current_jabatan() in ('guru bk','gurubk'));
+  using (public.is_admin())
+  with check (public.is_admin());
 drop policy if exists "attendance delete" on public.attendance;
 create policy "attendance delete" on public.attendance for delete to authenticated
   using (public.is_admin());

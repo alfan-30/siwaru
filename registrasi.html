@@ -41,80 +41,88 @@
 
   <!-- SweetAlert2 -->
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+  <style>
+    /* Hapus tombol mata bawaan browser Edge / IE */
+    input[type="password"]::-ms-reveal,
+    input[type="password"]::-ms-clear {
+      display: none !important;
+    }
+  </style>
+  <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32.png" />
+  <link rel="icon" type="image/png" sizes="16x16" href="assets/favicon-16.png" />
+  <link rel="shortcut icon" href="assets/favicon.ico" />
+  <link rel="apple-touch-icon" sizes="180x180" href="assets/apple-touch-icon.png" />
 </head>
 <body class="font-display bg-background-light dark:bg-background-dark">
 
   <div class="flex min-h-screen flex-col lg:flex-row">
   
     <!-- Kiri -->
-	<div class="flex flex-col justify-center items-center w-full lg:w-1/2 p-4 sm:p-6 lg:p-12">
-	  <div class="w-full max-w-md mx-auto">
+    <div class="flex flex-col justify-center items-center w-full lg:w-1/2 p-4 sm:p-6 lg:p-12">
+      <div class="w-full max-w-md mx-auto">
 
-    <!-- Logo khusus HP (atas Selamat Datang) -->
-	<div class="flex justify-center mb-6 lg:hidden">
-	  <img src="assets/SIWARU.png" alt="SIWARU Logo" class="w-40 sm:w-48 md:w-56 h-auto"/>
-	</div>
+        <!-- Logo khusus HP (atas Selamat Datang) -->
+        <div class="flex justify-center mb-6 lg:hidden">
+          <img src="assets/SIWARU.png" alt="SIWARU Logo" class="w-40 sm:w-48 md:w-56 h-auto"/>
+        </div>
 
-    <h1 class="text-3xl sm:text-4xl font-bold text-center mb-8 text-text-light dark:text-text-dark">
-      SELAMAT DATANG
-    </h1>
+        <h1 class="text-3xl sm:text-4xl font-bold text-center mb-8 text-text-light dark:text-text-dark">
+          SELAMAT DATANG
+        </h1>
 
         <!-- Form Registrasi -->
         <form id="registerForm" class="space-y-6">
           <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
             
             <!-- Nip/Nis -->
-			<div>
-			  <label for="nip_nis" class="block text-sm font-medium">Nip/Nis</label>
-			  <input type="text" id="nip_nis" placeholder="Masukkan nip/nis"
-				class="mt-1 block w-full px-4 py-3 bg-gray-light dark:bg-gray-dark rounded-md"
-				maxlength="20" />
-			  <small id="nipError" class="text-red-500 text-sm hidden">NIP/NIS wajib angka!</small>
-			</div>
+            <div>
+              <label for="nip_nis" class="block text-sm font-medium">Nip/Nis</label>
+              <input type="text" id="nip_nis" placeholder="Masukkan nip/nis"
+                class="mt-1 block w-full px-4 py-3 bg-gray-light dark:bg-gray-dark rounded-md"
+                maxlength="20" />
+              <small id="nipError" class="text-red-500 text-sm hidden">NIP/NIS wajib angka!</small>
+            </div>
 
             <!-- Nama -->
-			<div>
-			  <label for="nama" class="block text-sm font-medium">Nama</label>
-			  <input type="text" id="nama" placeholder="Masukkan nama Anda"
-				class="mt-1 block w-full px-4 py-3 bg-gray-light dark:bg-gray-dark rounded-md" />
-
-			  <!-- Pesan error -->
-			  <small id="namaError" class="text-red-500 text-sm hidden">Nama hanya boleh huruf!</small>
-			</div>
-			
-			<!-- Dropdown Kelas -->
-			<div class="mt-3">
-			  <label for="kelas" class="block text-sm font-medium">Kelas</label>
-			  <select
-				id="kelas"
-				disabled
-				class="mt-1 block w-full px-4 py-3 bg-gray-200 dark:bg-gray-dark rounded-md text-gray-500"
-			  >
-				<option value="">-- Pilih Kelas --</option>
-			  </select>
-			</div>
+            <div>
+              <label for="nama" class="block text-sm font-medium">Nama</label>
+              <input type="text" id="nama" placeholder="Masukkan nama Anda"
+                class="mt-1 block w-full px-4 py-3 bg-gray-light dark:bg-gray-dark rounded-md" />
+              <small id="namaError" class="text-red-500 text-sm hidden">Nama hanya boleh huruf!</small>
+            </div>
+            
+            <!-- Dropdown Kelas -->
+            <div class="mt-3">
+              <label for="kelas" class="block text-sm font-medium">Kelas</label>
+              <select
+                id="kelas"
+                disabled
+                class="mt-1 block w-full px-4 py-3 bg-gray-200 dark:bg-gray-dark rounded-md text-gray-500"
+              >
+                <option value="">-- Pilih Kelas --</option>
+              </select>
+            </div>
 
             <!-- Jabatan -->
-			<div>
-			  <label for="jabatan" class="block text-sm font-medium">Jabatan</label>
-			  <select id="jabatan"
-				class="mt-1 block w-full px-4 py-3 bg-gray-light dark:bg-gray-dark rounded-md">
-				<option disabled selected>Pilih jabatan</option>
-				<option value="guru">Guru</option>
-				<option value="siswa">Siswa</option>
-			  </select>
-			</div>
+            <div>
+              <label for="jabatan" class="block text-sm font-medium">Jabatan</label>
+              <select id="jabatan"
+                class="mt-1 block w-full px-4 py-3 bg-gray-light dark:bg-gray-dark rounded-md">
+                <option disabled selected>Pilih jabatan</option>
+                <option value="guru">Guru</option>
+                <option value="siswa">Siswa</option>
+              </select>
+            </div>
 
             <!-- No. Tlp -->
-			<div>
-			  <label for="no_tlp" class="block text-sm font-medium">No. Tlp</label>
-			  <input type="text" id="no_tlp" placeholder="Masukkan no.tlp Anda"
-				class="mt-1 block w-full px-4 py-3 bg-gray-light dark:bg-gray-dark rounded-md"
-				maxlength="12" />
-
-			  <!-- Pesan error -->
-			  <small id="tlpError" class="text-red-500 text-sm hidden">No. Tlp wajib angka dan maksimal 12 digit!</small>
-			</div>
+            <div>
+              <label for="no_tlp" class="block text-sm font-medium">No. Tlp</label>
+              <input type="text" id="no_tlp" placeholder="Masukkan no.tlp Anda"
+                class="mt-1 block w-full px-4 py-3 bg-gray-light dark:bg-gray-dark rounded-md"
+                maxlength="12" />
+              <small id="tlpError" class="text-red-500 text-sm hidden">No. Tlp wajib angka dan maksimal 12 digit!</small>
+            </div>
 
             <!-- Alamat -->
             <div>
@@ -135,31 +143,29 @@
             </div>
 
             <!-- Email -->
-			<div>
-			  <label for="email" class="block text-sm font-medium">Email</label>
-			  <input
-				type="email"
-				id="email"
-				placeholder="Masukkan email Anda"
-				class="mt-1 block w-full px-4 py-3 bg-gray-light dark:bg-gray-dark rounded-md"
-			  />
-			  <!-- Pesan error -->
-			  <small id="emailError" class="text-red-500 text-sm hidden">
-				Email harus mengandung '@' dan diakhiri dengan 'gmail.com'
-			  </small>
-			</div>
+            <div>
+              <label for="email" class="block text-sm font-medium">Email</label>
+              <input
+                type="email"
+                id="email"
+                placeholder="Masukkan email Anda"
+                class="mt-1 block w-full px-4 py-3 bg-gray-light dark:bg-gray-dark rounded-md"
+              />
+              <small id="emailError" class="text-red-500 text-sm hidden">
+                Email harus mengandung '@' dan diakhiri dengan 'gmail.com'
+              </small>
+            </div>
 
             <!-- Password -->
             <div>
               <label for="password" class="block text-sm font-medium">Password</label>
-              <!-- Password -->
-				<div class="relative mt-1">
-				  <input type="password" id="password" placeholder="Masukkan password"
-					class="block w-full px-4 py-3 pr-10 bg-gray-light dark:bg-gray-dark rounded-md"/>
-				  <button type="button" class="absolute inset-y-0 right-0 px-3" onclick="togglePassword('password', this)">
-					<span class="material-icons">visibility_off</span> <!-- awalnya tertutup -->
-				  </button>
-				</div>
+              <div class="relative mt-1">
+                <input type="password" id="password" placeholder="Masukkan password"
+                  class="block w-full px-4 py-3 pr-10 bg-gray-light dark:bg-gray-dark rounded-md"/>
+                <button type="button" class="absolute inset-y-0 right-0 px-3 flex items-center text-gray-500" onclick="togglePassword('password', this)">
+                  <span class="material-icons">visibility_off</span>
+                </button>
+              </div>
               <div class="mt-1">
                 <div class="w-full bg-gray-200 rounded-full h-1.5">
                   <div id="passwordStrength" class="bg-red-600 h-1.5 rounded-full w-0"></div>
@@ -172,12 +178,12 @@
             <div>
               <label for="konfirmasi_password" class="block text-sm font-medium">Konfirmasi Password</label>
               <div class="relative mt-1">
-			  <input type="password" id="konfirmasi_password" placeholder="Konfirmasi password"
-				class="block w-full px-4 py-3 pr-10 bg-gray-light dark:bg-gray-dark rounded-md"/>
-			  <button type="button" class="absolute inset-y-0 right-0 px-3" onclick="togglePassword('konfirmasi_password', this)">
-				<span class="material-icons">visibility_off</span> <!-- awalnya tertutup -->
-			  </button>
-			</div>
+                <input type="password" id="konfirmasi_password" placeholder="Konfirmasi password"
+                  class="block w-full px-4 py-3 pr-10 bg-gray-light dark:bg-gray-dark rounded-md"/>
+                <button type="button" class="absolute inset-y-0 right-0 px-3 flex items-center text-gray-500" onclick="togglePassword('konfirmasi_password', this)">
+                  <span class="material-icons">visibility_off</span>
+                </button>
+              </div>
               <div class="mt-1">
                 <div class="w-full bg-gray-200 rounded-full h-1.5">
                   <div id="confirmStrength" class="bg-red-600 h-1.5 rounded-full w-0"></div>

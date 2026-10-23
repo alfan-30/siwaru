@@ -5,138 +5,158 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Login SIWARU</title>
 
-  <!-- Tailwind -->
-  <script src="https://cdn.tailwindcss.com?plugins=forms,typography"></script>
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com?plugins=forms"></script>
+  <!-- SweetAlert2 -->
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-  <script>
-    tailwind.config = {
-      darkMode: "class",
-      theme: {
-        extend: {
-          colors: {
-            primary: "#1d63ff",
-            "background-light": "#ffffff",
-            "background-dark": "#121212",
-            "gray-light": "#e0e0e0",
-            "gray-dark": "#333333",
-            "text-light": "#000000",
-            "text-dark": "#ffffff",
-          },
-          fontFamily: {
-            display: ["Poppins", "sans-serif"],
-          },
-          borderRadius: {
-            DEFAULT: "0.5rem",
-          },
-        },
-      },
-    };
-  </script>
 
   <!-- Fonts & Icons -->
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+    }
+    /* Bayangan untuk Kotak Luar (Lebih lebar, menyebar lembut) */
+    .outer-box-shadow {
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.12), 0 5px 15px rgba(0, 0, 0, 0.05);
+    }
+    /* Bayangan untuk Kotak Dalam (Tegas dan timbul di atas kotak luar persis gambar) */
+    .inner-box-shadow {
+      box-shadow: 0 12px 32px rgba(0, 0, 0, 0.16), 0 2px 8px rgba(0, 0, 0, 0.08);
+    }
+    /* Sembunyikan ikon mata bawaan browser Edge / IE */
+    input[type="password"]::-ms-reveal,
+    input[type="password"]::-ms-clear {
+      display: none !important;
+    }
+  </style>
+  <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32.png" />
+  <link rel="icon" type="image/png" sizes="16x16" href="assets/favicon-16.png" />
+  <link rel="shortcut icon" href="assets/favicon.ico" />
+  <link rel="apple-touch-icon" sizes="180x180" href="assets/apple-touch-icon.png" />
 </head>
 
-<body class="font-display bg-background-light dark:bg-background-dark">
-  <div class="flex flex-col md:flex-row h-screen">
-    <!-- Kiri -->
-    <div class="w-full md:w-1/2 bg-gray-200 dark:bg-gray-800 flex items-center justify-center p-6">
-      <img src="assets/SiWARU.png" alt="SIWARU Logo" class="max-w-xs md:max-w-md w-full h-auto" />
-    </div>
+<body class="min-h-screen flex flex-col md:flex-row overflow-x-hidden">
+  
+  <!-- Sisi Kiri (50%): Latar Abu-abu dengan Logo SIWARU -->
+  <div class="w-full md:w-1/2 bg-[#e5e7eb] flex items-center justify-center p-8 min-h-[40vh] md:min-h-screen">
+    <img 
+      src="assets/SIWARU.png" 
+      alt="SIWARU Logo" 
+      class="w-72 sm:w-80 md:w-[430px] max-w-full h-auto object-contain"
+    />
+  </div>
 
-    <!-- Kanan -->
-    <div class="w-full md:w-1/2 flex items-center justify-center p-6">
-      <div class="max-w-sm w-full p-6 md:p-8 bg-white dark:bg-gray-900 rounded-lg shadow-md">
-        <h1 class="text-2xl md:text-3xl font-bold text-center mb-8 text-text-light dark:text-text-dark">
+  <!-- Sisi Kanan (50%): Latar Putih Keabuan dengan Kotak Ganda -->
+  <div class="w-full md:w-1/2 bg-[#f4f5f7] flex items-center justify-center p-6 md:p-12 min-h-[60vh] md:min-h-screen">
+    
+    <!-- 1. TAMPILAN PEMBUKA: Kotak Luar + Kotak Dalam Persis Gambar -->
+    <div id="roleSelection" class="bg-white rounded-[20px] outer-box-shadow p-7 sm:p-9 w-full max-w-[460px] flex items-center justify-center">
+      
+      <!-- Kotak Dalam yang Timbul -->
+      <div class="bg-white rounded-[14px] inner-box-shadow w-full px-7 py-8 sm:px-9 sm:py-9">
+        <h1 class="text-[22px] sm:text-[25px] font-bold text-center text-[#111827] mb-7 tracking-normal">
           SELAMAT DATANG
         </h1>
 
-					<!-- Ikon Sosial dengan Glow terbaru -->
-		<div class="flex justify-center space-x-6 mb-8">
-		  <a href="https://facebook.com" target="_blank">
-			<img src="assets/facebook.png" alt="Facebook"
-			  class="w-12 h-12 object-contain rounded-full cursor-pointer 
-					 transition-transform duration-300 hover:scale-110 hover:rotate-3
-					 shadow-lg hover:shadow-2xl 
-					 hover:drop-shadow-[0_0_18px_#0d47a1]" />
-		  </a>
-		  <a href="https://google.com" target="_blank">
-			<img src="assets/google.png" alt="Google"
-			  class="w-12 h-12 object-contain rounded-full cursor-pointer 
-					 transition-transform duration-300 hover:scale-110 hover:-rotate-3
-					 shadow-lg hover:shadow-2xl 
-					 hover:drop-shadow-[0_0_12px_#db4437]" />
-		  </a>
-		  <a href="https://x.com" target="_blank">
-			<img src="assets/x.png" alt="X"
-			  class="w-12 h-12 object-contain rounded-full cursor-pointer 
-					 transition-transform duration-300 hover:scale-110 hover:rotate-6
-					 shadow-lg hover:shadow-2xl 
-					 hover:drop-shadow-[0_0_25px_#000000]" />
-		  </a>
-		</div>
+        <div class="space-y-4">
+          <button
+            type="button"
+            id="btnPilihSiswa"
+            class="w-full bg-[#1868ff] hover:bg-blue-700 text-white py-3 px-4 rounded-[8px] font-semibold text-[14px] transition duration-200"
+          >
+            Login Siswa
+          </button>
+          <button
+            type="button"
+            id="btnPilihGuru"
+            class="w-full bg-[#16a34a] hover:bg-green-700 text-white py-3 px-4 rounded-[8px] font-semibold text-[14px] transition duration-200"
+          >
+            Login Guru
+          </button>
+        </div>
+      </div>
 
-        <!-- Form -->
-        <form id="loginForm">
-          <!-- Username -->
-          <div class="mb-4">
-            <label for="username" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-              Username
-            </label>
+    </div>
+
+    <!-- 2. TAMPILAN FORM LOGIN: Muncul Saat Klik Login Siswa / Login Guru -->
+    <div id="loginFormContainer" class="hidden bg-white rounded-[16px] outer-box-shadow w-full max-w-[380px] p-8 sm:p-9">
+      <h1 class="text-[22px] sm:text-[24px] font-bold text-center text-[#111827] mb-7">
+        SELAMAT DATANG
+      </h1>
+
+      <form id="loginForm" class="space-y-4">
+        <!-- Input NIS / NIP -->
+        <div>
+          <label id="identifierLabel" for="identifierInput" class="block text-xs text-gray-500 mb-1.5 font-normal">
+            Nis/Nomer Induk Siswa
+          </label>
+          <input
+            id="identifierInput"
+            type="text"
+            placeholder="Masukkan NIS Anda"
+            class="w-full px-3.5 py-2.5 bg-white border border-gray-300 rounded-[8px] text-sm text-gray-800 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
+          />
+        </div>
+
+        <!-- Input Password -->
+        <div>
+          <label for="password" class="block text-xs text-gray-500 mb-1.5 font-normal">
+            Password
+          </label>
+          <div class="relative">
             <input
-              id="username"
-              type="text"
-              placeholder="Masukkan username Anda"
-              class="w-full px-4 py-2 bg-gray-light dark:bg-gray-dark border-none rounded-md
-                     focus:ring-0 text-text-light dark:text-text-dark placeholder-gray-500 dark:placeholder-gray-400"
+              id="password"
+              type="password"
+              placeholder="Masukkan password Anda"
+              class="w-full px-3.5 py-2.5 pr-10 bg-white border border-gray-300 rounded-[8px] text-sm text-gray-800 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
             />
+            <button
+              type="button"
+              id="togglePassword"
+              class="absolute inset-y-0 right-0 px-3 flex items-center text-gray-500 hover:text-gray-700 transition"
+            >
+              <span class="material-icons text-lg">visibility_off</span>
+            </button>
           </div>
-
-          <!-- Password -->
-          <div class="mb-6">
-            <label for="password" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-              Password
-            </label>
-            <div class="relative">
-			  <input
-				id="password"
-				type="password"
-				placeholder="Masukkan password Anda"
-				class="w-full px-4 py-2 bg-gray-light dark:bg-gray-dark border-none rounded-md
-					   focus:ring-0 text-text-light dark:text-text-dark placeholder-gray-500 dark:placeholder-gray-400"
-			  />
-			  <button
-				type="button"
-				class="absolute inset-y-0 right-0 px-3 flex items-center"
-				id="togglePassword"
-			  >
-				<span class="material-icons text-gray-500 dark:text-gray-400">visibility_off</span>
-			  </button>
-			</div>
-            <a href="#" id="forgotPassword" class="text-xs text-gray-500 dark:text-gray-400 hover:underline float-right mt-1">
+          
+          <div class="flex justify-end mt-1.5">
+            <a href="#" id="forgotPassword" class="text-[11px] text-gray-400 hover:text-blue-600 transition">
               Lupa Password?
             </a>
           </div>
+        </div>
 
-          <!-- Tombol Login -->
+        <!-- Tombol Login & Kembali -->
+        <div class="space-y-2.5 pt-2">
           <button
             type="submit"
-            class="w-full bg-primary text-white py-2 rounded-md font-semibold hover:bg-blue-600 transition-colors"
+            id="btnLoginSubmit"
+            class="w-full bg-[#1868ff] hover:bg-blue-700 text-white py-2.5 px-4 rounded-[8px] font-semibold text-sm transition duration-200"
           >
             Login
           </button>
-        </form>
+          <button
+            type="button"
+            id="btnKembali"
+            class="w-full bg-[#cbd5e1] hover:bg-gray-400 text-gray-700 py-2.5 px-4 rounded-[8px] font-medium text-sm transition duration-200"
+          >
+            ← Kembali
+          </button>
+        </div>
+      </form>
 
-        <!-- Registrasi -->
-        <p class="text-sm text-center mt-4 text-gray-600 dark:text-gray-400">
-          Tidak punya akun? <a href="registrasi.html" class="text-primary hover:underline">Registrasi</a>
-        </p>
-      </div>
+      <!-- Link Registrasi (Hanya Muncul di Dalam Form Login Siswa/Guru) -->
+      <p class="text-xs text-center mt-6 text-gray-500">
+        Tidak punya akun? <a href="registrasi.html" class="text-[#1868ff] hover:underline font-semibold">Registrasi</a>
+      </p>
     </div>
+
   </div>
 
-  <!-- SCRIPT LOGIN -->
+  <!-- Script -->
   <script src="js/login.js"></script>
   <div id="react-bridge" hidden></div>
   <script type="module" src="/src/main.jsx"></script>

@@ -55,7 +55,7 @@ async function loadSchedules() {
   let query = supabase.from('schedules').select('id,kode_jadwal,mata_pelajaran,guru,tanggal,jam,ruang,kelas').order('tanggal',{ascending:true}).order('jam',{ascending:true});
   if (!isAdminPage) {
     if (['siswa'].includes(role)) query = query.eq('kelas', profile.kelas || '');
-    else if (['guru','guru mapel','guru bk','gurubk'].includes(role)) query = query.ilike('guru', profile.nama || '');
+    else if (['guru','guru mapel'].includes(role)) query = query.ilike('guru', profile.nama || '');
     else { await notify('Akses ditolak','Akun ini tidak memiliki akses melihat jadwal.','error'); return; }
   }
   const { data, error } = await query;

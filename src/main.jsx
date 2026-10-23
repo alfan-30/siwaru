@@ -18,17 +18,12 @@ function alertBox(options) {
 const NOMOR_ADMIN = '085784828955';
 const LINK_WA_ADMIN = 'https://wa.me/62' + NOMOR_ADMIN.slice(1);
 
-const todayWIB = () => new Intl.DateTimeFormat('en-CA', { timeZone: 'Asia/Jakarta' }).format(new Date()); // YYYY-MM-DD
-const fmtTanggal = iso => { const [y, m, d] = String(iso || '').split('-'); return d ? `${d}-${m}-${y}` : ''; };
-const fmtJam = t => String(t || '').slice(0, 5).replace(':', '.');
-const STATUS_CLASS = { masuk: 'bg-green-500', hadir: 'bg-green-500', izin: 'bg-yellow-500', sakit: 'bg-yellow-500', alpa: 'bg-red-500', terlambat: 'bg-red-500' };
 
 function destinationFor(role) {
   const value = String(role || '').toLowerCase().replaceAll('_',' ').trim();
   if (value === 'admin' || value === 'administrator') return 'DashboardADMIN.html';
-  if (value === 'guru bk' || value === 'gurubk') return 'DashboardGURUBK.html';
   if (value === 'guru' || value === 'guru mapel' || value === 'guru_mapel') return 'DashboardGURU.html';
-  return 'DashboardSISWA.html';
+  return 'absensiSISWA.html';
 }
 
 function SupabaseBridge() {
@@ -71,18 +66,15 @@ function SupabaseBridge() {
     if (loginForm) listen(loginForm, 'submit', async (event) => {
       event.preventDefault();
       if (!supabase) return alertBox({ icon: 'error', title: 'Supabase belum dikonfigurasi', text: 'Isi VITE_SUPABASE_URL dan VITE_SUPABASE_ANON_KEY pada file .env.local, lalu jalankan ulang npm run dev.' });
-      const username = document.getElementById('username')?.value.trim() || '';
+      // Login hanya memakai NIP/NIS + password (tanpa mengetik email).
+      const nipNis = document.getElementById('identifierInput')?.value.trim() || '';
       const password = document.getElementById('password')?.value || '';
-      if (!username || !password) return alertBox({ icon: 'error', title: 'Login Gagal', text: 'Username/email dan password wajib diisi.' });
-      let email = username;
-      // Login dengan NIP/NIS: cari email lewat fungsi database (pengguna belum punya sesi, jadi tidak bisa membaca tabel profiles langsung).
-      if (!username.includes('@')) {
-        const { data: found, error: lookupError } = await supabase.rpc('email_for_login', { p_nip: username });
-        if (lookupError || !found) return alertBox({ icon: 'error', title: 'Login Gagal', text: 'NIP/NIS tidak ditemukan. Gunakan email yang terdaftar atau periksa data akun.' });
-        email = found;
-      }
+      if (!nipNis || !password) return alertBox({ icon: 'error', title: 'Login Gagal', text: 'NIP/NIS dan password wajib diisi.' });
+      // Cari akun lewat fungsi database (pengguna belum punya sesi, jadi tidak bisa membaca tabel profiles langsung).
+      const { data: email, error: lookupError } = await supabase.rpc('email_for_login', { p_nip: nipNis });
+      if (lookupError || !email) return alertBox({ icon: 'error', title: 'Login Gagal', text: 'NIP/NIS atau password salah.' });
       const { data, error } = await supabase.auth.signInWithPassword({ email, password });
-      if (error) return alertBox({ icon: 'error', title: 'Login Gagal', text: /invalid login credentials/i.test(error.message) ? 'Email/NIP/NIS atau password salah.' : error.message });
+      if (error) return alertBox({ icon: 'error', title: 'Login Gagal', text: /invalid login credentials/i.test(error.message) ? 'NIP/NIS atau password salah.' : error.message });
       // Peran hanya dibaca dari tabel profiles (user_metadata bisa diubah pengguna sendiri, jadi tidak dipercaya).
       const { data: profile } = await supabase.from('profiles').select('jabatan').eq('id', data.user.id).maybeSingle();
       const role = profile?.jabatan || 'siswa';
@@ -120,80 +112,6 @@ function SupabaseBridge() {
       window.location.href='login.html';
     });
 
-    // ===== Absensi guru & siswa (halaman yang punya #absensiForm) =====
-    const absensiForm = document.getElementById('absensiForm');
-    if (absensiForm) {
-      const isGuruPage = !!document.getElementById('detailJam'); // halaman guru: kolom Jam sebelum Tanggal
-      const tbody = document.querySelector('main table tbody');
-      const val = id => document.getElementById(id)?.value?.trim() || '';
-
-      const renderRows = rows => {
-        if (!tbody) return;
-        tbody.innerHTML = '';
-        if (!rows.length) {
-          const tr = document.createElement('tr');
-          const td = document.createElement('td');
-          td.colSpan = 8; td.className = 'p-4 text-gray-500'; td.textContent = 'Belum ada data absensi.';
-          tr.appendChild(td); tbody.appendChild(tr); return;
-        }
-        rows.forEach((r, i) => {
-          const tanggal = fmtTanggal(r.tanggal), jam = fmtJam(r.waktu);
-          const tr = document.createElement('tr'); tr.className = 'border-b';
-          const cell = (text, cls = 'p-4') => { const td = document.createElement('td'); td.className = cls; td.textContent = text; tr.appendChild(td); return td; };
-          cell(String(i + 1)); cell(r.nama_siswa, 'p-4 font-medium'); cell(r.nis); cell(r.mata_pelajaran || '-');
-          if (isGuruPage) { cell(jam); cell(tanggal); } else { cell(tanggal); cell(jam); }
-          const statusTd = cell('');
-          const badge = document.createElement('span');
-          badge.className = `${STATUS_CLASS[String(r.status).toLowerCase()] || 'bg-gray-500'} text-white px-3 py-1 rounded-full text-xs`;
-          badge.textContent = r.status; statusTd.appendChild(badge);
-          const aksi = cell('Detail', 'p-4 text-blue-600 cursor-pointer');
-          aksi.addEventListener('click', () => {
-            if (isGuruPage) window.openDetail?.(r.nama_siswa, r.nis, r.mata_pelajaran || '-', jam, tanggal, r.status);
-            else window.openDetail?.(r.nama_siswa, r.nis, r.mata_pelajaran || '-', tanggal, jam, r.status);
-          });
-          tbody.appendChild(tr);
-        });
-      };
-
-      const loadRows = async () => {
-        const { data, error } = await supabase.from('attendance')
-          .select('nama_siswa,nis,mata_pelajaran,tanggal,waktu,status')
-          .order('tanggal', { ascending: false }).order('waktu', { ascending: false }).limit(200);
-        if (error) { console.error('Gagal memuat absensi:', error); return; }
-        renderRows(data || []);
-      };
-
-      listen(absensiForm, 'submit', async (event) => {
-        event.preventDefault();
-        if (!supabase) return alertBox({ icon: 'error', title: 'Supabase belum dikonfigurasi', text: 'Isi variabel Supabase di .env.local terlebih dahulu.' });
-        const jadwal = window.SIWARU_ABSENSI;
-        if (jadwal && !jadwal.isOpen()) return alertBox({ icon: 'warning', title: 'Absensi ditutup', text: `Absensi hanya dibuka pukul ${jadwal.jamBuka} sampai ${jadwal.jamTutup} WIB.` });
-        const mapel = val('mapel'), status = val('status');
-        if (!mapel || !status) return alertBox({ icon: 'warning', title: 'Peringatan', text: 'Mata pelajaran dan status wajib diisi.' });
-        // Nama, NIS/NIP, tanggal, dan jam dipaksa oleh server dari akun yang login.
-        const { error } = await supabase.from('attendance').insert({ nama_siswa: val('namaSiswa'), nis: val('nisSiswa'), mata_pelajaran: mapel, status, tanggal: todayWIB() });
-        if (error) {
-          let text = error.message;
-          if (error.code === '23505') text = 'Anda sudah melakukan absensi hari ini.';
-          return alertBox({ icon: 'error', title: 'Absensi gagal', text });
-        }
-        await alertBox({ icon: 'success', title: 'Absensi berhasil', text: 'Absensi Anda sudah tersimpan.', timer: 1500, showConfirmButton: false });
-        document.getElementById('mapel').value = ''; document.getElementById('status').value = '';
-        window.closeAbsensiForm?.();
-        loadRows();
-      });
-
-      (async () => {
-        if (!supabase) return;
-        const { data: { session } } = await supabase.auth.getSession();
-        if (!session) { await alertBox({ icon: 'warning', title: 'Silakan login', text: 'Anda harus login untuk membuka halaman absensi.' }); window.location.href = 'login.html'; return; }
-        const { data: profile } = await supabase.from('profiles').select('nama,nip_nis').eq('id', session.user.id).maybeSingle();
-        const lock = (id, value) => { const el = document.getElementById(id); if (el) { el.value = value; el.readOnly = true; el.classList.add('bg-gray-100'); } };
-        if (profile) { lock('namaSiswa', profile.nama); lock('nisSiswa', profile.nip_nis); }
-        lock('tanggal', todayWIB()); const tgl = document.getElementById('tanggal'); if (tgl) tgl.style.pointerEvents = 'none';
-        loadRows();
-      })();
-    }
     return () => listeners.forEach(remove => remove());
   }, []);
   return <span aria-hidden="true" />;
