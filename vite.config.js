@@ -7,6 +7,7 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 export default defineConfig({
   plugins: [react()],
   build: { rollupOptions: { input: {
+    'index': resolve(__dirname, 'index.html'),
     'DashboardADMIN': resolve(__dirname, 'DashboardADMIN.html'),
     'DashboardGURU': resolve(__dirname, 'DashboardGURU.html'),
     'DashboardSISWA': resolve(__dirname, 'DashboardSISWA.html'),
